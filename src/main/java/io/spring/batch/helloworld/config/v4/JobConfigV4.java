@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class JobConfigV4 {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
