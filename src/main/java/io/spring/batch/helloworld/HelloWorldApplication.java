@@ -3,16 +3,18 @@ package io.spring.batch.helloworld;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.Statement;
 
 @RequiredArgsConstructor
 @EnableBatchProcessing
@@ -21,6 +23,7 @@ public class HelloWorldApplication {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final DataSource dataSource;
 
     @Bean
     public Job job() {
@@ -41,5 +44,22 @@ public class HelloWorldApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HelloWorldApplication.class, args);
+    }
+
+    @Bean
+    ApplicationRunner applicationRunner() {
+        return args -> {
+            try(Connection connection = dataSource.getConnection()) {
+                System.out.println(dataSource.getClass());
+                System.out.println(connection.getClass());
+                System.out.println(connection.getMetaData().getDriverName());
+                System.out.println(connection.getMetaData().getURL());
+                System.out.println(connection.getMetaData().getUserName());
+
+                final Statement statement = connection.createStatement();
+                final String SQL = "CREATE TABLE USERR(idd INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (idd))";
+                statement.executeUpdate(SQL);
+            }
+        };
     }
 }
