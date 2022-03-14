@@ -25,21 +25,21 @@ public class HelloWorldApplication {
     private final StepBuilderFactory stepBuilderFactory;
     private final DataSource dataSource;
 
-    @Bean
-    public Job job() {
-        return this.jobBuilderFactory.get("basicJob")
-                .start(step1())
-                .build();
-    }
-
-    @Bean
-    public Step step1() {
-        return this.stepBuilderFactory.get("step1")
-                .tasklet((stepContribution, chunkContext) -> {
-                    System.out.println("Hello world!");
-                    return RepeatStatus.FINISHED;
-                }).build();
-    }
+//    @Bean
+//    public Job job() {
+//        return this.jobBuilderFactory.get("basicJob")
+//                .start(step1())
+//                .build();
+//    }
+//
+//    @Bean
+//    public Step step1() {
+//        return this.stepBuilderFactory.get("step1")
+//                .tasklet((stepContribution, chunkContext) -> {
+//                    System.out.println("Hello world!");
+//                    return RepeatStatus.FINISHED;
+//                }).build();
+//    }
 
 
     public static void main(String[] args) {
@@ -56,9 +56,9 @@ public class HelloWorldApplication {
                 System.out.println(connection.getMetaData().getURL());
                 System.out.println(connection.getMetaData().getUserName());
 
-                final Statement statement = connection.createStatement();
-                final String SQL = "CREATE TABLE USERR(idd INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (idd))";
-                statement.executeUpdate(SQL);
+//                final Statement statement = connection.createStatement();
+//                final String SQL = "CREATE TABLE USERR(idd INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (idd))";
+//                statement.executeUpdate(SQL);
             }
         };
     }
