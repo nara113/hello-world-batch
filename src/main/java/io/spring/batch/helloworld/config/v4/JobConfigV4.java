@@ -1,15 +1,14 @@
-package io.spring.batch.helloworld.config.v3;
+package io.spring.batch.helloworld.config.v4;
 
 import io.spring.batch.helloworld.validator.MyParameterValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParametersValidator;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,24 +16,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @RequiredArgsConstructor
-//@Configuration
-public class JobConfigV3 {
+@Configuration
+public class JobConfigV4 {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
-//    @Bean
-//    public JobParametersValidator validator() {
-//        DefaultJobParametersValidator validator = new DefaultJobParametersValidator();
-//
-//        validator.setRequiredKeys(new String[]{"fileName"});
-//        validator.setOptionalKeys(new String[]{"name"});
-//
-//        return validator;
-//    }
+    static class DailyJobTimestamper implements JobParametersIncrementer {
 
-    // 여러개의 validator를 등록할 때
+        @Override
+        public JobParameters getNext(JobParameters jobParameters) {
+            return new JobParametersBuilder(jobParameters)
+                    .addDate("currentDate", new Date())
+                    .toJobParameters();
+        }
+    }
+
    @Bean
     public CompositeJobParametersValidator validator() {
         CompositeJobParametersValidator validator = new CompositeJobParametersValidator();
@@ -42,7 +41,7 @@ public class JobConfigV3 {
         DefaultJobParametersValidator defaultValidator = new DefaultJobParametersValidator();
 
         defaultValidator.setRequiredKeys(new String[]{"fileName"});
-        defaultValidator.setOptionalKeys(new String[]{"name"});
+        defaultValidator.setOptionalKeys(new String[]{"name", "run.id", "currentDate"});
 
         defaultValidator.afterPropertiesSet();
 
@@ -52,22 +51,24 @@ public class JobConfigV3 {
     }
 
     @Bean
-    public Job jobV3() {
-        return this.jobBuilderFactory.get("basicJobV3")
-                .start(stepV3())
+    public Job jobV4() {
+        return this.jobBuilderFactory.get("basicJobV4")
+                .start(stepV4())
                 .validator(validator())
+//                .incrementer(new RunIdIncrementer())
+                .incrementer(new DailyJobTimestamper())
                 .build();
     }
 
     @Bean
-    public Step stepV3() {
+    public Step stepV4() {
         return this.stepBuilderFactory.get("step1")
-                .tasklet(taskletV3(null, null)).build();
+                .tasklet(taskletV4(null, null)).build();
     }
 
     @StepScope
     @Bean
-    public Tasklet taskletV3(@Value("#{jobParameters['fileName']}") String fileName,
+    public Tasklet taskletV4(@Value("#{jobParameters['fileName']}") String fileName,
                              @Value("#{jobParameters['name']}") String name) {
         return (stepContribution, chunkContext) -> {
             System.out.println("fileName " + fileName);
