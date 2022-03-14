@@ -33,6 +33,7 @@ public class JobConfigV2 {
                 .tasklet(taskletV2(null)).build();
     }
 
+    // 늦은 바인딩을 사용할 땐 @StepScope를 붙여줘야 한다.
     @StepScope
     @Bean
     public Tasklet taskletV2(@Value("#{jobParameters['name']}") String name) {
