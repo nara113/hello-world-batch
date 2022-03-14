@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class ChunkJob {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
