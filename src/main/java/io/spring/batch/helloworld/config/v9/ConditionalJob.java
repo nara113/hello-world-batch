@@ -24,7 +24,11 @@ public class ConditionalJob {
                 .start(firstStep())
                 .next(decider())
                 .from(decider())
-                    .on("FAILED").to(failStep())
+//                    .on("FAILED").to(failStep())
+                //step이 반환한 ExitStatus에 상관없이 COMPLETE 저장
+//                    .on("FAILED").end()
+//                .on("FAILED").fail()
+                    .on("FAILED").stopAndRestart(successStep())
                 .from(decider())
                     .on("*").to(successStep())
                 .end()
