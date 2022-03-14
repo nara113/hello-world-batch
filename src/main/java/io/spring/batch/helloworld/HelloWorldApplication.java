@@ -50,11 +50,11 @@ public class HelloWorldApplication {
     ApplicationRunner applicationRunner() {
         return args -> {
             try(Connection connection = dataSource.getConnection()) {
-                System.out.println(dataSource.getClass());
-                System.out.println(connection.getClass());
-                System.out.println(connection.getMetaData().getDriverName());
-                System.out.println(connection.getMetaData().getURL());
-                System.out.println(connection.getMetaData().getUserName());
+//                System.out.println(dataSource.getClass());
+//                System.out.println(connection.getClass());
+//                System.out.println(connection.getMetaData().getDriverName());
+//                System.out.println(connection.getMetaData().getURL());
+//                System.out.println(connection.getMetaData().getUserName());
 
 //                final Statement statement = connection.createStatement();
 //                final String SQL = "CREATE TABLE USERR(idd INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (idd))";
