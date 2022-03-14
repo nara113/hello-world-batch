@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.Callable;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class JobConfigV7 {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -40,7 +40,7 @@ public class JobConfigV7 {
     @Bean
     public Step stepV7() {
         return this.stepBuilderFactory.get("step1")
-                .tasklet(systemCommandTasklet())
+                .tasklet(tasklet())
                 .build();
     }
 
