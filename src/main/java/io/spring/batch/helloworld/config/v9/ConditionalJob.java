@@ -5,18 +5,53 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.step.job.DefaultJobParametersExtractor;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class ConditionalJob {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+
+    @Bean
+    public Flow preProcessingFlow() {
+        return new FlowBuilder<Flow>("preProcessingFlow")
+                .start(firstStep())
+                .next(successStep())
+                .build();
+    }
+
+    @Bean
+    public Job preProcessingJob() {
+        return this.jobBuilderFactory.get("preProcessingJob")
+                .start(firstStep())
+                .next(successStep())
+                .build();
+    }
+
+    @Bean
+    public Job flowJob() {
+        return this.jobBuilderFactory.get("flowJob")
+                .start(initializeBatch())
+                .next(failStep())
+                .build();
+    }
+
+    @Bean
+    public Step initializeBatch() {
+        return stepBuilderFactory.get("initializeBatch")
+                .job(preProcessingJob())
+                .parametersExtractor(new DefaultJobParametersExtractor())
+                .build();
+    }
 
     @Bean
     public Job job() {

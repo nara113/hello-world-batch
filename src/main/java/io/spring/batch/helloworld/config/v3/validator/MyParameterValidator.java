@@ -1,4 +1,4 @@
-package io.spring.batch.helloworld.validator;
+package io.spring.batch.helloworld.config.v3.validator;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersInvalidException;

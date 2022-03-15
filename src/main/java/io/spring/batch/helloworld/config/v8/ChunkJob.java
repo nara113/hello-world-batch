@@ -1,6 +1,6 @@
 package io.spring.batch.helloworld.config.v8;
 
-import io.spring.batch.helloworld.validator.MyParameterValidator;
+import io.spring.batch.helloworld.config.v3.validator.MyParameterValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -14,7 +14,6 @@ import org.springframework.batch.repeat.policy.CompositeCompletionPolicy;
 import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.batch.repeat.policy.TimeoutTerminationPolicy;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.UUID;
