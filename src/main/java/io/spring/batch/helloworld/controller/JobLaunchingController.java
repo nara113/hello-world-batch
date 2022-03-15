@@ -15,6 +15,7 @@ public class JobLaunchingController {
     private final JobLauncher jobLauncher;
     private final ApplicationContext applicationContext;
 
+    // curl -H "Content-Type: application/json" -X POST -d "{\"name\":\"explorerJob\",\"jobParameters\":{\"foo\":\"bar\"}}" 'http://localhost:8080/run'
     @PostMapping("/run")
     public ExitStatus runJob(@RequestBody JobLaunchRequest request) throws Exception {
         final Job job = applicationContext.getBean(request.getName(), Job.class);
