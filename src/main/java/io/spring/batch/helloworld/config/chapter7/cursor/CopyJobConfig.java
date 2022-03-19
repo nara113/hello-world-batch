@@ -1,4 +1,4 @@
-package io.spring.batch.helloworld.config.chapter7;
+package io.spring.batch.helloworld.config.chapter7.cursor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
 import javax.sql.DataSource;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class CopyJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -44,7 +44,7 @@ public class CopyJobConfig {
 
     @Bean
     public ItemWriter<Customer> itemWriter() {
-        return customers -> customers.forEach(customer -> System.out.println(customer));
+        return customers -> customers.forEach(System.out::println);
     }
 
     @Bean

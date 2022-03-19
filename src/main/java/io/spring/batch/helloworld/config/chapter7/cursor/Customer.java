@@ -1,4 +1,4 @@
-package io.spring.batch.helloworld.config.chapter7;
+package io.spring.batch.helloworld.config.chapter7.cursor;
 
 import lombok.Getter;
 import lombok.Setter;

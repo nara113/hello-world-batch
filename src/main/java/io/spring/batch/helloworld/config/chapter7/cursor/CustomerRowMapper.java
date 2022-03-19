@@ -1,4 +1,4 @@
-package io.spring.batch.helloworld.config.chapter7;
+package io.spring.batch.helloworld.config.chapter7.cursor;
 
 
 import org.springframework.jdbc.core.RowMapper;
