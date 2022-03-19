@@ -30,7 +30,7 @@ import org.springframework.core.io.ResourceLoader;
 import javax.sql.DataSource;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class TransactionJobV1 {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -56,7 +56,7 @@ public class TransactionJobV1 {
                 .itemSqlParameterSourceProvider(
                         new BeanPropertyItemSqlParameterSourceProvider<>())
                 .sql("insert into transaction " +
-                        "(account_number, timestamp, amount) " +
+                        "(account_summary_id, timestamp, amount) " +
                         "values ((select id from account_summary " +
                         "where account_number = :accountNumber), " +
                         ":timestamp, :amount)")
@@ -84,7 +84,7 @@ public class TransactionJobV1 {
                 .sql("select account_number, current_balance " +
                         "from account_summary a " +
                         "where a.id in ( " +
-                        "      select distinct t.account_number " +
+                        "      select distinct t.account_summary_id " +
                         "      from transaction t) " +
                         "order by a.account_number")
                 .rowMapper(((rs, rowNum) -> {
