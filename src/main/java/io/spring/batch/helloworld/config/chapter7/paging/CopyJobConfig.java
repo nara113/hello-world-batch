@@ -23,11 +23,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class CopyJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -67,6 +67,8 @@ public class CopyJobConfig {
 
     @Bean
     public ItemWriter<Customer> itemWriter() {
+        Map<String, String> m = new HashMap<>();
+        new ArrayList<>(m.values());
         return customers -> customers.forEach(System.out::println);
     }
 
