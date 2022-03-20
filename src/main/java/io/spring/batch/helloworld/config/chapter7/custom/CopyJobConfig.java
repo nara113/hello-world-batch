@@ -1,6 +1,7 @@
-package io.spring.batch.helloworld.config.chapter7.service;
+package io.spring.batch.helloworld.config.chapter7.custom;
 
 import io.spring.batch.helloworld.config.chapter7.cursor.Customer;
+import io.spring.batch.helloworld.config.chapter7.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -13,20 +14,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
-//@Configuration
+@Configuration
 public class CopyJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public ItemReaderAdapter<Customer> customerItemReader(CustomerService customerService) {
-        ItemReaderAdapter<Customer> adapter = new ItemReaderAdapter<>();
+    public CustomerItemReader customerItemReader() {
+        CustomerItemReader customerItemReader = new CustomerItemReader();
 
-        adapter.setTargetObject(customerService);
-        adapter.setTargetMethod("getCustomer");
-
-        return adapter;
+        customerItemReader.setName("customerItemReader");
+        return customerItemReader;
     }
 
     @Bean
@@ -38,7 +37,7 @@ public class CopyJobConfig {
     public Step copyFileStep() {
         return stepBuilderFactory.get("copyFileStep")
                 .<Customer, Customer>chunk(10)
-                .reader(customerItemReader(null))
+                .reader(customerItemReader())
                 .writer(itemWriter())
                 .build();
     }
@@ -47,7 +46,7 @@ public class CopyJobConfig {
     public Job copyFileJob() {
         return jobBuilderFactory.get("copyFileJob")
                 .start(copyFileStep())
-                .incrementer(new RunIdIncrementer())
+//                .incrementer(new RunIdIncrementer())
                 .build();
     }
 }
