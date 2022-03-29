@@ -5,7 +5,6 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemStreamSupport;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +64,7 @@ public class CustomerItemReader extends ItemStreamSupport implements ItemReader<
         return customer;
     }
 
+    @Override
     public void open(ExecutionContext context) throws ItemStreamException {
         if(context.containsKey(getExecutionContextKey(INDEX_KEY))) {
             int index = context.getInt(getExecutionContextKey(INDEX_KEY));
@@ -80,6 +80,7 @@ public class CustomerItemReader extends ItemStreamSupport implements ItemReader<
         }
     }
 
+    @Override
     public void update(ExecutionContext context) throws ItemStreamException {
         context.putInt(getExecutionContextKey(INDEX_KEY), curIndex);
     }

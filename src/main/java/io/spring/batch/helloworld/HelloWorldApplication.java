@@ -1,5 +1,6 @@
 package io.spring.batch.helloworld;
 
+import io.spring.batch.helloworld.config.chapter8.ValidationJob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -43,7 +44,8 @@ public class HelloWorldApplication {
 
 
     public static void main(String[] args) {
-        SpringApplication.run(HelloWorldApplication.class, args);
+//        SpringApplication.run(HelloWorldApplication.class, args);
+        SpringApplication.run(HelloWorldApplication.class, "customerFile=classpath:customer.csv");
     }
 
     @Bean
