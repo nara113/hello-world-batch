@@ -10,6 +10,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.validator.BeanValidatingItemProcessor;
+import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
@@ -41,18 +42,32 @@ public class ValidationJob {
         return items -> items.forEach(System.out::println);
     }
 
+//    @Bean
+//    public BeanValidatingItemProcessor<Customer> customerBeanValidatingItemProcessor() {
+//        return new BeanValidatingItemProcessor<>();
+//    }
+
     @Bean
-    public BeanValidatingItemProcessor<Customer> customerBeanValidatingItemProcessor() {
-        return new BeanValidatingItemProcessor<>();
+    public UniqueLastNameValidator validator() {
+        UniqueLastNameValidator validator = new UniqueLastNameValidator();
+        validator.setName("validator");
+
+        return validator;
+    }
+
+    @Bean
+    public ValidatingItemProcessor<Customer> processor() {
+        return new ValidatingItemProcessor<>(validator());
     }
 
     @Bean
     public Step copyFileStep() {
         return this.stepBuilderFactory.get("copyFileStep")
-                .<Customer, Customer>chunk(5)
+                .<Customer, Customer>chunk(3)
                 .reader(customerFlatFileItemReader(null))
-                .processor(customerBeanValidatingItemProcessor())
+                .processor(processor())
                 .writer(itemWriter())
+                .stream(validator()) //안해줘도 작동함
                 .build();
     }
 

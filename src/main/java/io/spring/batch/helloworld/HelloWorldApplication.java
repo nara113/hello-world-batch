@@ -44,8 +44,7 @@ public class HelloWorldApplication {
 
 
     public static void main(String[] args) {
-//        SpringApplication.run(HelloWorldApplication.class, args);
-        SpringApplication.run(HelloWorldApplication.class, "customerFile=classpath:customer.csv");
+        SpringApplication.run(HelloWorldApplication.class, "customerFile=classpath:customer.csv", "run.id=3");
     }
 
     @Bean

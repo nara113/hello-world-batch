@@ -57,7 +57,6 @@ public class CopyJobConfig {
                 .writer(itemWriter())
                 .faultTolerant()
                 .skip(ParseException.class)
-                .skipPolicy(new FileVerificationSkipper())
                 .skipLimit(10)
                 .listener(new CustomerItemListener())
                 .build();
