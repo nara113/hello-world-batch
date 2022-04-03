@@ -1,14 +1,13 @@
 package io.spring.batch.helloworld.config.chapter8;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @ToString
+@NoArgsConstructor
 @Getter
 @Setter
 public class Customer {
@@ -41,4 +40,15 @@ public class Customer {
     @Size(min = 5, max = 5)
     @Pattern(regexp = "\\d{5}")
     private String zip;
+
+    // 아규먼트 없는 생성자도 명시적으로 추가해줘야함
+    public Customer(Customer customer) {
+        this.firstName = customer.firstName;
+        this.middleInitial = customer.middleInitial;
+        this.lastName = customer.lastName;
+        this.address = customer.address;
+        this.city = customer.city;
+        this.state = customer.state;
+        this.zip = customer.zip;
+    }
 }
